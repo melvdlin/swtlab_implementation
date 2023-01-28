@@ -1,4 +1,4 @@
-package org.somevand.swt;
+package org.somevand.swt.servlets;
 
 import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
@@ -13,9 +13,6 @@ import java.util.TimeZone;
 
 @WebListener
 public class StartupListener implements ServletContextListener {
-    public static class AttributeNames {
-        public static final String freemarkerConfig = "freemarkerConfig";
-    }
 
     public StartupListener() { }
 
@@ -25,7 +22,7 @@ public class StartupListener implements ServletContextListener {
         System.out.println("I'm alive!");
         System.out.println("Initializing Apache Freemarker...");
         try {
-            initFreemarker(sce.getServletContext());
+            AttributeHelper.setFreemarkerConfig(sce.getServletContext(), buildFreemarkerConfig());
         } catch (IOException e) {
             System.out.printf("Big Bad Error: %s%n", e);
         }
@@ -37,7 +34,7 @@ public class StartupListener implements ServletContextListener {
         /* This method is called when the servlet Context is undeployed or Application Server shuts down. */
     }
 
-    private void initFreemarker(ServletContext context) throws IOException {
+    private Configuration buildFreemarkerConfig() throws IOException {
         // Create your Configuration instance, and specify if up to what FreeMarker
         // version (here 2.3.32) do you want to apply the fixes that are not 100%
         // backward-compatible. See the Configuration JavaDoc for details.
@@ -70,6 +67,6 @@ public class StartupListener implements ServletContextListener {
         // To accomodate to how JDBC returns values; see Javadoc!
         cfg.setSQLDateAndTimeTimeZone(TimeZone.getDefault());
 
-        context.setAttribute(AttributeNames.freemarkerConfig, cfg);
+        return cfg;
     }
 }

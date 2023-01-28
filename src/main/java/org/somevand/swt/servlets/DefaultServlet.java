@@ -1,4 +1,4 @@
-package org.somevand.swt;
+package org.somevand.swt.servlets;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -6,7 +6,7 @@ import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
 
-@WebServlet(name = "DefaultServlet", value = {"/", "/index"})
+@WebServlet(name = "DefaultServlet", value = {"/", "/index", "/default"})
 public class DefaultServlet extends HttpServlet {
 
     @Override
