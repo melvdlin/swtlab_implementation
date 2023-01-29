@@ -10,12 +10,22 @@ import java.io.IOException;
 public class DefaultServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+    protected void doGet(
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) throws ServletException, IOException {
+        request.getParameterNames().asIterator().forEachRemaining(System.out::println);
+        System.out.println(request.getRequestURL());
+        System.out.println(request.getRequestURI());
+        request.getRequestDispatcher("/templates/defaultWebpage.jsp")
+                .forward(request, response);
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+    protected void doPost(
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) throws ServletException, IOException {
+        doGet(request, response);
     }
 }
