@@ -1,0 +1,12 @@
+form {
+    display: table;
+}
+form .labelledFormField {
+    display: table-row;
+}
+.labelledFormField label {
+    display: table-cell;
+}
+.labelledFormField input {
+    display: table-cell;
+}

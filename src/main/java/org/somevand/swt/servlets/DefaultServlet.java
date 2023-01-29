@@ -6,7 +6,7 @@ import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
 
-@WebServlet(name = "DefaultServlet", value = {"/", "/index", "/default"})
+@WebServlet(name = "DefaultServlet", value = { "", "/index", "/default" })
 public class DefaultServlet extends HttpServlet {
 
     @Override
