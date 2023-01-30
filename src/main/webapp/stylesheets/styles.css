@@ -10,3 +10,7 @@ form .labelledFormField {
 .labelledFormField input {
     display: table-cell;
 }
+
+table, th, td {
+    border: 1px solid;
+}

@@ -13,12 +13,27 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/stylesheets/styles.css">
     <title>Planetarium der Deutschen Einheit</title>
 </head>
 <body>
-<%@include file="header.jsp"%>
-<h1>Willkommen im Planetarium der Deutschen Einheit${param.user != null ? ', ' += param.user : ''}!</h1>
+<c:choose>
+    <c:when test="${sessionScope.user == null}">
+        <p>
+            <%@include file="login.jsp"%>
+            <%@include file="register.jsp"%>
+        </p>
+    </c:when>
+    <c:otherwise>
+        <p>
+            Logged in as ${sessionScope.userName}
+            <a href="${pageContext.request.contextPath}/logout">Logout</a>
+        </p>
+    </c:otherwise>
+</c:choose>
+<h1>Willkommen im Planetarium der Deutschen Einheit${sessionScope.user != null ? ', ' += sessionScope.userName : ''}!</h1>
 <a href="default">Reload!</a>
 <a href="default?user=Karl">Reload as Karl!</a>
+<a href="${pageContext.request.contextPath}/browse">Browse available showings</a>
 </body>
 </html>

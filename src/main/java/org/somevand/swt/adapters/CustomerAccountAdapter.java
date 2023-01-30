@@ -7,22 +7,35 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
+import java.util.concurrent.locks.ReadWriteLock;
 
-public enum CustomerAccountAdapter implements ICustomerAccount {
-    INSTANCE;
+public class CustomerAccountAdapter implements ICustomerAccount {
+    private static volatile CustomerAccountAdapter instance;
 
     private static class SQLStrings {
-        public static final String queryCA = "SELECT * FROM swt.customeraccounts WHERE email = ?;";
-        public static final String updateCA = "INSERT INTO swt.customeraccounts (email, password) VALUES (?, ?);";
+        public static final String queryCA = "SELECT * FROM customeraccounts WHERE email = ?;";
+        public static final String updateCA = "INSERT INTO customeraccounts (email, password) VALUES (?, ?);";
         public static final String emailCol = "email";
         public static final String passwordCol = "password";
+    }
+
+    private CustomerAccountAdapter() { }
+
+    public static CustomerAccountAdapter getInstance() {
+        if (instance == null) {
+            synchronized (CustomerAccountAdapter.class) {
+                if (instance == null) {
+                    instance = new CustomerAccountAdapter();
+                }
+            }
+        }
+        return instance;
     }
 
     @Override
     public Optional<CustomerAccount> getCustomerAccount(String email) throws SQLException {
 
-        ConnectionHelper.getLock().readLock().lock();
-        try (Connection connection = ConnectionHelper.getConnection();
+        try (Connection connection = ConnectionHelper.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SQLStrings.queryCA)
         ) {
             statement.setString(1, email);
@@ -34,23 +47,23 @@ public enum CustomerAccountAdapter implements ICustomerAccount {
                                 res.getString(SQLStrings.passwordCol)));
             }
             return Optional.empty();
-        } finally {
-            ConnectionHelper.getLock().readLock().unlock();
         }
     }
 
     @Override
     public void addCustomerAccount(String email, String password) throws SQLException {
 
-        ConnectionHelper.getLock().writeLock().lock();
-        try (Connection connection = ConnectionHelper.getConnection();
+        try (Connection connection = ConnectionHelper.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SQLStrings.updateCA)
         ) {
             statement.setString(1, email);
             statement.setString(2, password);
             statement.executeUpdate();
-        } finally {
-            ConnectionHelper.getLock().writeLock().unlock();
         }
+    }
+
+    @Override
+    public ReadWriteLock getLock() {
+        return ConnectionHelper.getInstance().getLock();
     }
 }
