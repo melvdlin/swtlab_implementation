@@ -53,8 +53,8 @@ public class ShowingAdapter implements IShowing {
                         new Showing(
                                 showingID,
                                 res.getString(SQLStrings.titleCol),
-                                res.getLong(SQLStrings.startDateTimeCol),
-                                res.getLong(SQLStrings.durationCol),
+                                res.getInt(SQLStrings.startDateTimeCol),
+                                res.getInt(SQLStrings.durationCol),
                                 res.getInt(SQLStrings.hallNumberCool),
                                 res.getBoolean(SQLStrings.isArchivedCol)));
             }
@@ -75,8 +75,8 @@ public class ShowingAdapter implements IShowing {
                         new Showing(
                                 res.getInt(SQLStrings.idCol),
                                 res.getString(SQLStrings.titleCol),
-                                res.getLong(SQLStrings.startDateTimeCol),
-                                res.getLong(SQLStrings.durationCol),
+                                res.getInt(SQLStrings.startDateTimeCol),
+                                res.getInt(SQLStrings.durationCol),
                                 res.getInt(SQLStrings.hallNumberCool),
                                 res.getBoolean(SQLStrings.isArchivedCol)));
             }
@@ -97,8 +97,8 @@ public class ShowingAdapter implements IShowing {
                         new Showing(
                                 res.getInt(SQLStrings.idCol),
                                 res.getString(SQLStrings.titleCol),
-                                res.getLong(SQLStrings.startDateTimeCol),
-                                res.getLong(SQLStrings.durationCol),
+                                res.getInt(SQLStrings.startDateTimeCol),
+                                res.getInt(SQLStrings.durationCol),
                                 res.getInt(SQLStrings.hallNumberCool),
                                 res.getBoolean(SQLStrings.isArchivedCol)));
             }

@@ -9,13 +9,14 @@ import java.util.Date;
 public record Showing(
         int id,
         String title,
-        long startDateTime,
-        long duration,
+        int startDateTime,
+        int duration,
         int hallNumber,
         boolean isArchived) {
 
     public Date startDateTimeAsDate() {
         return Date.from(Instant.ofEpochSecond(startDateTime()).atZone(ZoneId.systemDefault()).toInstant());
     }
+
 
 }

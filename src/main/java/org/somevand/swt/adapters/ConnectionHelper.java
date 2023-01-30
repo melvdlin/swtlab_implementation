@@ -30,7 +30,7 @@ public class ConnectionHelper {
         this.user = "swt_operator";
         this.password = "";
     }
-    private ConnectionHelper(String url, String user, String password) {
+    public ConnectionHelper(String url, String user, String password) {
         this.url = url;
         this.user = user;
         this.password = password;

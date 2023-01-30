@@ -1,0 +1,12 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="CustomerAccountAdapterComponent" type="JUnit" factoryName="JUnit">
+    <module name="swtlab" />
+    <option name="PACKAGE_NAME" value="org.somevand.swt.adapters" />
+    <option name="MAIN_CLASS_NAME" value="org.somevand.swt.adapters.CustomerAccountAdapterTest" />
+    <option name="METHOD_NAME" value="" />
+    <option name="TEST_OBJECT" value="class" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

@@ -1,22 +1,18 @@
-package org.somevand.swt.application;
+package org.somevand.swt.adapters;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.somevand.swt.adapters.ConnectionHelper;
-import org.somevand.swt.adapters.CustomerAccountAdapter;
-import org.somevand.swt.adapters.ShowingAdapter;
 import org.somevand.swt.model.CustomerAccount;
 import org.somevand.swt.model.Hall;
 import org.somevand.swt.model.Showing;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class UDEKApplicationTest {
+class ShowingAdapterTest {
     private static class SQLStatements {
         private static final String createHalls = """
             CREATE TABLE halls (
@@ -80,9 +76,8 @@ class UDEKApplicationTest {
     );
 
     private ConnectionHelper beforeConnectionHelper;
-    private CustomerAccountAdapter customerAccountAdapter;
+
     private ShowingAdapter showingAdapter;
-    private UDEKApplication application;
 
     @BeforeEach
     void setUp() {
@@ -132,9 +127,7 @@ class UDEKApplicationTest {
             throw new RuntimeException(e);
         }
 
-        customerAccountAdapter = CustomerAccountAdapter.getInstance();
         showingAdapter = ShowingAdapter.getInstance();
-        application = UDEKApplication.getInstance();
     }
 
     @AfterEach
@@ -151,20 +144,7 @@ class UDEKApplicationTest {
     }
 
     @Test
-    void testGetCustomerAccountExisting() {
-        try {
-            Optional<CustomerAccount> ca = customerAccountAdapter.getCustomerAccount(customerAccount.email());
-            assertNotEquals(null, ca);
-            assertTrue(ca.isPresent());
-            assertEquals(customerAccount.email(), ca.get().email());
-            assertEquals(customerAccount.password(), ca.get().password());
-        } catch (SQLException e) {
-            fail();
-        }
-    }
-
-    @Test
-    void testForwardNSUBrowse() {
+    void getNonArchivedShowings() {
         try {
             List<Showing> showings = showingAdapter.getNonArchivedShowings();
             assertTrue(showings.stream().anyMatch( showing ->
@@ -175,29 +155,6 @@ class UDEKApplicationTest {
                     showing.hallNumber() == nonArchivedShowing.hallNumber()
             ));
             assertFalse(showings.stream().anyMatch( showing -> showing.id() == archivedShowing.id()));
-        } catch (SQLException e) {
-            fail();
-        }
-
-    }
-
-    @Test
-    void testForwardSubmitRegistrationExisting() {
-        try {
-            boolean result = application.forwardSubmitRegistration(customerAccount.email(), customerAccount.password());
-            assertFalse(result);
-        } catch (SQLException e) {
-            fail();
-        }
-    }
-
-    @Test
-    void testForwardSubmitRegistrationNonExisting() {
-        final String newAccountEmail = "defg";
-        final String newAccountPassword = "hijk";
-        try {
-            boolean result = application.forwardSubmitRegistration(newAccountEmail, newAccountPassword);
-            assertTrue(result);
         } catch (SQLException e) {
             fail();
         }
